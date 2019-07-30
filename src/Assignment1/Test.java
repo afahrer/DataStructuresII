@@ -13,7 +13,7 @@ public class Test {
         puzzle = getPuzzle();
         boardWidth = puzzle.length;
         printPuzzle();
-        solve(0,0);
+        solve(0, 0);
         printPuzzle();
     }
 
@@ -28,19 +28,19 @@ public class Test {
     }
 
     private static boolean solve(int row, int col) {
-        if(row == boardWidth) {
+        if (row == boardWidth) {
             return true;
         }
-        if(col == boardWidth) {
-            return solve(row+1, 0);
+        if (col == boardWidth) {
+            return solve(row + 1, 0);
         }
-        if(puzzle[row][col] != 0) {
-            return solve(row, col+1);
+        if (puzzle[row][col] != 0) {
+            return solve(row, col + 1);
         }
-        for (int i = 1; i < boardWidth+1; i++) {
-            if(check(row, col, i)) {
+        for (int i = 1; i < boardWidth + 1; i++) {
+            if (check(row, col, i)) {
                 puzzle[row][col] = i;
-                if(solve(row, col+1)) return true;
+                if (solve(row, col + 1)) return true;
                 else puzzle[row][col] = 0;
             }
         }
@@ -50,26 +50,26 @@ public class Test {
     private static boolean check(int row, int col, int num) {
 
         for (int i = 0; i < boardWidth; i++) {
-            if(puzzle[row][i] == num) return false;
+            if (puzzle[row][i] == num) return false;
         }
 
         for (int i = 0; i < boardWidth; i++) {
-            if(puzzle[i][col] == num) return false;
+            if (puzzle[i][col] == num) return false;
         }
 
-        int boxWidth = (int)Math.sqrt(boardWidth);
+        int boxWidth = (int) Math.sqrt(boardWidth);
         int multipleRow = boxWidth;
         int multipleCol = boxWidth;
 
-        while(row >= multipleRow) {
-            multipleRow+=boxWidth;
+        while (row >= multipleRow) {
+            multipleRow += boxWidth;
         }
-        while(col >= multipleCol) {
-            multipleCol+=boxWidth;
+        while (col >= multipleCol) {
+            multipleCol += boxWidth;
         }
-        for (int i = multipleRow-boxWidth; i < multipleRow; i++) {
-            for (int j = multipleCol-boxWidth; j < multipleCol; j++) {
-                if(puzzle[i][j] == num) return false;
+        for (int i = multipleRow - boxWidth; i < multipleRow; i++) {
+            for (int j = multipleCol - boxWidth; j < multipleCol; j++) {
+                if (puzzle[i][j] == num) return false;
             }
         }
         return true;
@@ -82,7 +82,7 @@ public class Test {
         try {
             filestream = new FileInputStream("puzzle1.dat");
             ioStream = new ObjectInputStream(filestream);
-            puzzle = (int[][])ioStream.readObject();
+            puzzle = (int[][]) ioStream.readObject();
         } catch (EOFException e) {
             return null;
         } catch (Exception e) {
