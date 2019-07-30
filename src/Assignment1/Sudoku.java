@@ -1,14 +1,20 @@
 package Assignment1;
+/*
+    Author: Adam Fahrer
+    Date: July 30, 2019
+    Purpose: To get an int[][] from file that contains a Sudoku puzzle then use
+             backtracking to solve the puzzle and write the new puzzle to a file called solution.dat.
+ */
 
 import java.io.*;
 
 public class Sudoku {
-
+    
     private static int[][] puzzle;
-    private static int boardWidth;
+    private static int     boardWidth;
 
     public static void main(String[] args) {
-        puzzle = getPuzzle();
+        puzzle = getPuzzleFromFile();
         if (puzzle == null) {
             System.out.println("Puzzle Not Found");
             return;
@@ -42,6 +48,7 @@ public class Sudoku {
         }
     }
 
+    // recursive backtracking method that attempts to solve the puzzle
     private static boolean solve(int row, int col) {
         if (row == boardWidth) return true;
         if (col == boardWidth) return solve(row + 1, 0);
@@ -56,31 +63,35 @@ public class Sudoku {
         return false;
     }
 
+    // check to see if a number is valid in the row, column and square
     private static boolean check(int row, int col, int num) {
 
-        for (int i = 0; i < boardWidth; i++)
+        for (int i = 0; i < boardWidth; i++) {
             if (puzzle[row][i] == num) return false;
-
-        for (int i = 0; i < boardWidth; i++)
+        }
+        for (int i = 0; i < boardWidth; i++) {
             if (puzzle[i][col] == num) return false;
+        }
 
-        int boxWidth = (int) Math.sqrt(boardWidth);
+        int boxWidth    = (int) Math.sqrt(boardWidth);
         int multipleRow = boxWidth;
         int multipleCol = boxWidth;
 
-        while (row >= multipleRow)
+        while (row >= multipleRow) {
             multipleRow += boxWidth;
-
-        while (col >= multipleCol)
+        }
+        while (col >= multipleCol) {
             multipleCol += boxWidth;
-
+        }
         for (int i = multipleRow - boxWidth; i < multipleRow; i++) {
-            for (int j = multipleCol - boxWidth; j < multipleCol; j++)
+            for (int j = multipleCol - boxWidth; j < multipleCol; j++) {
                 if (puzzle[i][j] == num) return false;
+            }
         }
         return true;
     }
 
+    // returns the corresponding letter for numbers >= 10
     private static char getLetter(int num) {
         switch (num) {
             case 10:
@@ -101,16 +112,14 @@ public class Sudoku {
         return ' ';
     }
 
-    private static int[][] getPuzzle() {
-        ObjectInputStream ioStream = null;
-        FileInputStream filestream = null;
-        int[][] puzzle = null;
+    private static int[][] getPuzzleFromFile() {
+        ObjectInputStream ioStream   = null;
+        FileInputStream   filestream = null;
+        int[][]           puzzle     = null;
         try {
             filestream = new FileInputStream("puzzle1.dat");
-            ioStream = new ObjectInputStream(filestream);
-            puzzle = (int[][]) ioStream.readObject();
-        } catch (EOFException e) {
-            return null;
+            ioStream   = new ObjectInputStream(filestream);
+            puzzle     = (int[][]) ioStream.readObject();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -127,13 +136,13 @@ public class Sudoku {
 
     private static void writeToFile(Object o) {
         try {
-            FileOutputStream fileOut = new FileOutputStream("solution.dat");
+            FileOutputStream   fileOut   = new FileOutputStream("solution.dat");
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(o);
             objectOut.close();
             fileOut.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
