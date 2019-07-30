@@ -64,17 +64,14 @@ public class Test {
         while(row >= multipleRow) {
             multipleRow+=boxWidth;
         }
-
         while(col >= multipleCol) {
             multipleCol+=boxWidth;
         }
-
         for (int i = multipleRow-boxWidth; i < multipleRow; i++) {
             for (int j = multipleCol-boxWidth; j < multipleCol; j++) {
                 if(puzzle[i][j] == num) return false;
             }
         }
-
         return true;
     }
 
