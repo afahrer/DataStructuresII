@@ -3,7 +3,7 @@ package Assignment1;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 
-public class BuildTestData {
+public class BuildTestPuzzle {
     public static void main(String[] args) {
         int[][] puzzle = {
         {5,3,0,0,7,0,0,0,0},
@@ -17,7 +17,7 @@ public class BuildTestData {
         {0,0,0,0,8,0,0,7,9},
         };
         try {
-            FileOutputStream fileOut = new FileOutputStream("text.dat", true);
+            FileOutputStream fileOut = new FileOutputStream("9x9.dat", true);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(puzzle);
             objectOut.close();
