@@ -17,7 +17,7 @@ public class BuildTestPuzzle {
         {0,0,0,0,8,0,0,7,9},
         };
         try {
-            FileOutputStream fileOut = new FileOutputStream("9x9.dat", true);
+            FileOutputStream fileOut = new FileOutputStream("MyTestData.dat", true);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(puzzle);
             objectOut.close();

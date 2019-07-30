@@ -1,18 +1,15 @@
 package Assignment1;
 
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 
-public class Test {
+public class Sudoku {
+
     private static int[][] puzzle;
-
     private static int boardWidth;
 
     public static void main(String[] args) {
         puzzle = getPuzzle();
-        if(puzzle == null) {
+        if (puzzle == null) {
             System.out.println("Puzzle Not Found");
             return;
         }
@@ -22,13 +19,14 @@ public class Test {
         solve(0, 0);
         System.out.println("\nSolved Puzzle: ");
         printPuzzle();
+        writeToFile(puzzle);
     }
 
     private static void printPuzzle() {
         System.out.println();
-        int squares = (int)Math.sqrt(boardWidth);
+        int squares = (int) Math.sqrt(boardWidth);
         for (int i = 0; i < boardWidth; i++) {
-            if(i % squares == 0 && i != 0) {
+            if (i % squares == 0 && i != 0) {
                 for (int j = 0; j < boardWidth + squares - 1; j++) {
                     System.out.print("\t_");
                 }
@@ -36,8 +34,8 @@ public class Test {
             }
             System.out.print("[\t");
             for (int j = 0; j < boardWidth; j++) {
-                if(j % squares == 0 && j != 0) System.out.print("|\t");
-                if(puzzle[i][j] >= 10) System.out.print(getLetter(puzzle[i][j]) + "\t");
+                if (j % squares == 0 && j != 0) System.out.print("|\t");
+                if (puzzle[i][j] >= 10) System.out.print(getLetter(puzzle[i][j]) + "\t");
                 else System.out.print(puzzle[i][j] + "\t");
             }
             System.out.print("]\n");
@@ -83,29 +81,6 @@ public class Test {
         return true;
     }
 
-    private static int[][] getPuzzle() {
-        ObjectInputStream ioStream = null;
-        FileInputStream filestream = null;
-        int[][] puzzle = null;
-        try {
-            filestream = new FileInputStream("puzzle1.dat");
-            ioStream = new ObjectInputStream(filestream);
-            puzzle = (int[][]) ioStream.readObject();
-        } catch (EOFException e) {
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                ioStream.close();
-                filestream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return puzzle;
-    }
-
     private static char getLetter(int num) {
         switch (num) {
             case 10:
@@ -124,5 +99,41 @@ public class Test {
                 return 'G';
         }
         return ' ';
+    }
+
+    private static int[][] getPuzzle() {
+        ObjectInputStream ioStream = null;
+        FileInputStream filestream = null;
+        int[][] puzzle = null;
+        try {
+            filestream = new FileInputStream("puzzle1.dat");
+            ioStream = new ObjectInputStream(filestream);
+            puzzle = (int[][]) ioStream.readObject();
+        } catch (EOFException e) {
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert ioStream != null;
+                ioStream.close();
+                filestream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return puzzle;
+    }
+
+    private static void writeToFile(Object o) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream("solution.dat");
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(o);
+            objectOut.close();
+            fileOut.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }
