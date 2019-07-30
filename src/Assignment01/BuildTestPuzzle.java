@@ -1,4 +1,4 @@
-package Assignment1;
+package Assignment01;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
