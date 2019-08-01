@@ -5,7 +5,7 @@ package Assignment01;
     Purpose: To get an int[][] from file that contains a Sudoku puzzle then use
              backtracking to solve the puzzle and write the new puzzle to a
              file called solution.dat.
- */
+*/
 
 import java.io.*;
 
