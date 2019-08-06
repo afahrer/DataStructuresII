@@ -1,22 +1,25 @@
 package Assignment02;
 
-public class BinarySearchTree<T extends Comparable> implements BSTInterface<T>{
+public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
     private class Node {
         T item;
         Node left;
         Node right;
+
         Node(T item) {
-            this(item,null,null);
+            this(item, null, null);
         }
+
         Node(T item, Node left, Node right) {
-            this.item  = item;
-            this.left  = left;
+            this.item = item;
+            this.left = left;
             this.right = right;
         }
     }
+
     private Node root;
 
-    public int count(){
+    public int count() {
         return count(root);
     }
 
@@ -26,15 +29,52 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T>{
 
     public boolean isLeaf(T value) {
         Node temp = isLeaf(value, root);
-        if(temp.item == null) throw new RuntimeException("Item not Found");
+        if (temp.item == null) throw new RuntimeException("Item not Found");
         return temp.left == null && temp.right == null;
     }
 
     private Node isLeaf(T value, Node r) {
-        if(r == null) return null;
-        if(r.item.equals(value)) return r;
+        if (r == null) return null;
+        if (r.item.equals(value)) return r;
         Node temp = isLeaf(value, r.left);
-        return temp == null ? isLeaf(value,r.right) : temp;
+        return temp == null ? isLeaf(value, r.right) : temp;
+    }
+
+    public int minHeight() {
+        return minHeight(root);
+    }
+
+    private int minHeight(Node r) {
+        return r == null ? 0 : 1 + Math.min(minHeight(r.left), minHeight(r.right));
+    }
+
+    public int maxHeight() {
+        return maxHeight(root);
+    }
+
+    private int maxHeight(Node r) {
+        return r == null ? 0 : 1 + Math.max(maxHeight(r.left), maxHeight(r.right));
+    }
+
+    public boolean isBalanced() {
+        return isBalanced(root);
+    }
+
+    private boolean isBalanced(Node r) {
+        if(r == null) return true;
+        return maxHeight(r.left) - maxHeight(r.right) <= 1 && maxHeight(r.left) - maxHeight(r.right) >= -1;
+    }
+
+    public boolean isComplete() {
+        int height = maxHeight();
+        return isComplete(root, 1, height);
+    }
+
+    private boolean isComplete(Node r, int pos, int height) {
+        if(pos == height - 1 && r == null) return false;
+        if(pos == height - 1) return true;
+        if(r == null || r.left == null ^ r.right == null) return false;
+        return isComplete(r.left, pos +1, height) && isComplete(r.right, pos +1, height);
     }
 
     public boolean isFull() {
@@ -43,32 +83,46 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T>{
 
     private boolean isFull(Node r) {
         if(r == null) return true;
-        if(r.left == null ^ r.right == null) return false;
-        boolean full = isFull(r.left) && isFull(r.right);
-        return full;
+        if (r.left == null ^ r.right == null) return false;
+        return isFull(r.left) && isFull(r.right);
     }
 
-    public void printInOrder() {printInOrder(root);}
+    public void printInOrder() {
+        printInOrder(root);
+        System.out.println();
+    }
+
     private void printInOrder(Node r) {
         if (r == null) return;
         printInOrder(r.left);
-        System.out.print(r.item + ", ");
+        System.out.print(r.item + ",");
         printInOrder(r.right);
     }
-    public void printPreOrder() {printPreOrder(root);}
+
+    public void printPreOrder() {
+        printPreOrder(root);
+        System.out.println();
+    }
+
     private void printPreOrder(Node r) {
         if (r == null) return;
-        System.out.print(r.item + ", ");
+        System.out.print(r.item + ",");
         printInOrder(r.left);
         printInOrder(r.right);
     }
-    public void printPostOrder() {printPostOrder(root);}
+
+    public void printPostOrder() {
+        printPostOrder(root);
+        System.out.println();
+    }
+
     private void printPostOrder(Node r) {
         if (r == null) return;
         printInOrder(r.left);
         printInOrder(r.right);
-        System.out.print(r.item + ", ");
+        System.out.print(r.item + ",");
     }
+
     @Override
     public boolean isEmpty() {
         return root == null;
@@ -76,27 +130,28 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T>{
 
     @Override
     public void add(T item) {
-        if(root == null) {
+        if(contains(item)) throw new BSTException("Item Already Exists " + item);
+        if (root == null) {
             root = new Node(item);
             return;
         }
-        add(item,root);
+        add(item, root);
     }
 
     private void add(T item, Node r) {
-        if(r.item.compareTo(item) > 0) {
-            if(r.left == null) {
+        if (r.item.compareTo(item) > 0) {
+            if (r.left == null) {
                 r.left = new Node(item);
                 return;
             }
-            add(item,r.left);
+            add(item, r.left);
             return;
         }
-        if(r.right == null) {
+        if (r.right == null) {
             r.right = new Node(item);
             return;
         }
-        add(item,r.right);
+        add(item, r.right);
     }
 
     @Override
@@ -105,68 +160,58 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T>{
     }
 
     private boolean contains(T item, Node r) {
-        if(r == null) return false;
-        if(r.item == item) return true;
-        return contains(item, r.left) && contains(item, r.right);
+        if (r == null) return false;
+        if (r.item == item) return true;
+        return r.item.compareTo(item) > 0 ? contains(item, r.left) : contains(item, r.right);
     }
 
     @Override
     public void delete(T item) {
-        delete(item, root);
+        root = delete(item, root);
     }
 
-    private void delete(T item, Node r) {
-        if (r == null) return;
-        Node parent = null;
-        Node curr = r;
-        while(curr != null && curr.item != item) {
-            parent = curr;
-            if(r.item.compareTo(item) > 0) {
-                curr = curr.left;
-            }
-            else curr = curr.right;
+    private Node delete(T item, Node r) {
+        if (r == null) throw new BSTException("Item does not exist for deletion");
+        if (r.item.compareTo(item) > 0)
+            r.left = delete(item, r.left);
+        else if (r.item.compareTo(item) < 0)
+            r.right = delete(item, r.right);
+        else {
+            if (r.left == null)
+                return r.right;
+            else if (r.right == null)
+                return r.left;
+
+            r.item = minVal(r.right);
+            r.right = delete(r.item, r.right);
         }
-        // item does not exist
-        if(curr == null) return;
-        // Node is Leaf
-        if(curr.left == null && curr.right == null) {
-            if(curr == root) removeAll();
-            if(parent.left == curr) parent.left = null;
-            else parent.right = null;
-            return;
+        return r;
+    }
+
+    private T minVal(Node r) {
+        while (r.left != null) {
+            r = r.left;
         }
-        // node has two children
-        if(curr.left != null && curr.right != null) {
-            Node minRight = minValue(r.right);
-            T min = minRight.item;
-            delete(min, root);
-            curr.item = min;
-            return;
-        }
-        // node has one child
-        Node child;
-        if(curr.right != null) {
-            child = curr.right;
-        }
-        child = curr.left;
-        if(curr == root) {
-            root = child;
-            return;
-        }
-        if(curr == parent.left) {
-            parent.left = child;
-        }
-        parent.right = child;
+        return r.item;
     }
 
     @Override
     public void removeAll() {
         root = null;
     }
-    private Node minValue(Node r) {
-        while(r.left != null) {
-            r = r.left;
+
+    public void treeBuildFromSorted(T[] list) {
+        treeBuildFromSorted(list,0,list.length);
+    }
+    private void treeBuildFromSorted(T[] list, int start, int end) {
+        if(start == 0 && end == 1) {
+            add(list[0]);
+            return;
         }
-        return r;
+        if(start == end - 1) return;
+        int mid = (end + start) / 2;
+        add(list[mid]);
+        treeBuildFromSorted(list,start,mid);
+        treeBuildFromSorted(list,mid,end);
     }
 }
