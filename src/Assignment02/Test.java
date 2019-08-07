@@ -1,12 +1,14 @@
 package Assignment02;
 
+import java.io.IOException;
+
 public class Test {
-    public static void main(String[] args) {
-        Integer[] list = {0,11,22,34,55,56,67,76,78,88,99,100};
-        BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
-        tree.treeBuildFromSorted(list);
-        printTreeDetails(tree);
-//        BinarySearchTree<Integer> test = new BinarySearchTree<Integer>();
+    public static void main(String[] args) throws IOException {
+//        Integer[] list = {0,11,22,34,55,56,67,76,78,88,99,100};
+//        BinarySearchTree<Integer> tree = new BinarySearchTree<Integer>();
+//        tree.treeBuildFromSorted(list);
+//        printTreeDetails(tree);
+        BinarySearchTree<Integer> test = new BinarySearchTree<Integer>();
 //        test.add(5);
 //        test.add(7);
 //        test.add(8);
@@ -14,29 +16,32 @@ public class Test {
 //        test.add(2);
 //        test.add(6);
 //        test.add(4);
-//        printTreeDetails(test);
-//        BinarySearchTree<Integer> treeInt = new BinarySearchTree<Integer>();
-//        treeInt.add(50);
-//        treeInt.add(25);
-//        treeInt.add(75);
-//        treeInt.add(33);
-//        treeInt.add(0);
-//        treeInt.add(56);
-//        treeInt.add(77);
-//        treeInt.add(55);
-//        treeInt.add(87);
-//        treeInt.add(100);
-//        treeInt.add(99);
-//        treeInt.add(24);
-//        treeInt.add(66);
-//        treeInt.add(54);
-//        treeInt.add(82);
-//        treeInt.add(52);
-//        treeInt.delete(77);
-//        treeInt.delete(55);
-//        treeInt.delete(0);
-//        treeInt.delete(100);
-//        printTreeDetails(treeInt);
+        printTreeDetails(test);
+        BinarySearchTree<Integer> treeInt = new BinarySearchTree<Integer>();
+        treeInt.add(50);
+        treeInt.add(25);
+        treeInt.add(75);
+        treeInt.add(33);
+        treeInt.add(0);
+        treeInt.add(56);
+        treeInt.add(77);
+        treeInt.add(55);
+        treeInt.add(87);
+        treeInt.add(100);
+        treeInt.add(99);
+        treeInt.add(24);
+        treeInt.add(66);
+        treeInt.add(54);
+        treeInt.add(82);
+        treeInt.add(52);
+        treeInt.delete(77);
+        treeInt.delete(55);
+        treeInt.delete(0);
+        treeInt.delete(100);
+        printTreeDetails(treeInt);
+        treeInt.saveToFile();
+        treeInt.buildTreeFromFile("tree.csv");
+        printTreeDetails(treeInt);
 //        BinarySearchTree<Double> treeDouble = new BinarySearchTree<Double>();
 //        treeDouble.add(50.45);
 //        treeDouble.add(25.32);
@@ -59,6 +64,28 @@ public class Test {
 //        treeDouble.delete(0.0);
 //        treeDouble.delete(100.232);
 //        printTreeDetails(treeDouble);
+//        BinarySearchTree<String> treeString = new BinarySearchTree<String >();
+//        treeString.add("abcdef");
+//        treeString.add("rwerw");
+//        treeString.add("a");
+//        treeString.add("dsfw");
+//        treeString.add("string");
+//        treeString.add("hr5t");
+//        treeString.add("wegbv");
+//        treeString.add("qwrrw");
+//        treeString.add("yreg");
+//        treeString.add("weq");
+//        treeString.add("sdfb");
+//        treeString.add("ddged");
+//        treeString.add("tosv");
+//        treeString.add("bvba");
+//        treeString.add("ysreg");
+//        treeString.add("sdfww");
+//        treeString.delete("yreg");
+//        treeString.delete("weq");
+//        treeString.delete("a");
+//        treeString.delete("ysreg");
+//        printTreeDetails(treeString);
     }
 
     private static void printTreeDetails(BinarySearchTree tree) {
@@ -76,5 +103,4 @@ public class Test {
         System.out.println("\nPost Order: ");
         tree.printPostOrder();
     }
-
 }

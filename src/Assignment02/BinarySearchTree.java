@@ -1,5 +1,7 @@
 package Assignment02;
 
+import java.io.*;
+
 public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
     private class Node {
         T item;
@@ -18,6 +20,16 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
     }
 
     private Node root;
+    private FileWriter csv;
+
+    public BinarySearchTree() {
+        root = null;
+        try {
+            csv = new FileWriter("tree.csv");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public int count() {
         return count(root);
@@ -61,7 +73,7 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
     }
 
     private boolean isBalanced(Node r) {
-        if(r == null) return true;
+        if (r == null) return true;
         return maxHeight(r.left) - maxHeight(r.right) <= 1 && maxHeight(r.left) - maxHeight(r.right) >= -1;
     }
 
@@ -71,10 +83,10 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
     }
 
     private boolean isComplete(Node r, int pos, int height) {
-        if(pos == height - 1 && r == null) return false;
-        if(pos == height - 1) return true;
-        if(r == null || r.left == null ^ r.right == null) return false;
-        return isComplete(r.left, pos +1, height) && isComplete(r.right, pos +1, height);
+        if (pos == height - 1 && r == null) return false;
+        if (pos == height - 1) return true;
+        if (r == null || r.left == null ^ r.right == null) return false;
+        return isComplete(r.left, pos + 1, height) && isComplete(r.right, pos + 1, height);
     }
 
     public boolean isFull() {
@@ -82,7 +94,7 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
     }
 
     private boolean isFull(Node r) {
-        if(r == null) return true;
+        if (r == null) return true;
         if (r.left == null ^ r.right == null) return false;
         return isFull(r.left) && isFull(r.right);
     }
@@ -130,7 +142,7 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
 
     @Override
     public void add(T item) {
-        if(contains(item)) throw new BSTException("Item Already Exists " + item);
+        if (contains(item)) throw new BSTException("Item Already Exists " + item);
         if (root == null) {
             root = new Node(item);
             return;
@@ -201,17 +213,60 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
     }
 
     public void treeBuildFromSorted(T[] list) {
-        treeBuildFromSorted(list,0,list.length);
+        treeBuildFromSorted(list, 0, list.length);
     }
+
     private void treeBuildFromSorted(T[] list, int start, int end) {
-        if(start == 0 && end == 1) {
+        if (start == 0 && end == 1) {
             add(list[0]);
             return;
         }
-        if(start == end - 1) return;
+        if (start == end - 1) return;
         int mid = (end + start) / 2;
         add(list[mid]);
-        treeBuildFromSorted(list,start,mid);
-        treeBuildFromSorted(list,mid,end);
+        treeBuildFromSorted(list, start, mid);
+        treeBuildFromSorted(list, mid, end);
+    }
+
+    public void saveToFile(){
+        try {
+            saveToFile(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveToFile(Node r) throws IOException {
+        if (r == null) return;
+        saveToFile(r.left);
+        csv.append(r.item.toString());
+        csv.append(",");
+//        csv.append("\n");
+
+        saveToFile(r.right);
+        if (r == root) {
+            csv.flush();
+            csv.close();
+        }
+    }
+
+    public void buildTreeFromFile(String fileName) {
+        BufferedReader csvReader = null;
+        try {
+            csvReader = new BufferedReader(new FileReader(fileName));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        String row;
+        String[][] data = new String[1000][1];
+        removeAll();
+        int count = 0;
+        try {
+            while ((row = csvReader.readLine()) != null) {
+                data[count] = row.split(",");
+            }
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 }
