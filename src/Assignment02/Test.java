@@ -8,32 +8,32 @@ public class Test {
         BinarySearchTree<Integer> tree1 = new BinarySearchTree<Integer>();
         tree1.add(50);
         tree1.add(25);
-        tree1.add(75);
+        tree1.add(13);
         tree1.add(33);
+        tree1.add(5);
+        tree1.add(15);
+        tree1.add(1);
         tree1.add(0);
-        tree1.add(56);
-        tree1.add(77);
+        tree1.add(75);
+        tree1.add(60);
         tree1.add(55);
-        tree1.add(87);
+        tree1.add(65);
+        tree1.add(90);
+        tree1.add(80);
         tree1.add(100);
-        tree1.add(99);
-        tree1.add(24);
-        tree1.add(66);
-        tree1.add(54);
-        tree1.add(82);
-        tree1.add(52);
+        tree1.add(101);
+        tree1.add(102);
+        System.out.println("tree1.isLeaf(0) " + tree1.isLeaf(0));
+        System.out.println("tree1.isLeaf(102) " + tree1.isLeaf(102));
+        System.out.println("tree1.isLeaf(5) " + tree1.isLeaf(5));
+        System.out.println("tree1.isLeaf(100) " + tree1.isLeaf(100));
         //internal
-        tree1.delete(75);
-        tree1.delete(55);
+        tree1.delete(5);
+        tree1.delete(100);
         //leaf
         tree1.delete(0);
-        tree1.delete(100);
+        tree1.delete(102);
         printTreeDetails(tree1);
-        System.out.println("\ntree1.isLeaf(82) " + tree1.isLeaf(82));
-        System.out.println("tree1.isLeaf(24) " + tree1.isLeaf(24));
-        System.out.println("tree1.isLeaf(50) " + tree1.isLeaf(50));
-        System.out.println("tree1.isLeaf(54) " + tree1.isLeaf(54));
-
 
         BinarySearchTree<Double> tree2 = new BinarySearchTree<Double>();
         tree2.add(50.45);
