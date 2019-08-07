@@ -1,6 +1,7 @@
 package Assignment02;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
     private class Node {
@@ -84,8 +85,8 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
 
     private boolean isComplete(Node r, int pos, int height) {
         if (pos == height - 1 && r == null) return false;
-        if (pos == height - 1) return true;
-        if (r == null || r.left == null ^ r.right == null) return false;
+        if (pos == height - 1 || r == null) return true;
+        if (r.left == null ^ r.right == null) return false;
         return isComplete(r.left, pos + 1, height) && isComplete(r.right, pos + 1, height);
     }
 
@@ -250,7 +251,7 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
         }
     }
 
-    public void buildTreeFromFile(String fileName) {
+    public void buildTreeFromFile(String fileName, int size) {
         BufferedReader csvReader = null;
         try {
             csvReader = new BufferedReader(new FileReader(fileName));
@@ -258,15 +259,16 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
             e.printStackTrace();
         }
         String row;
-        String[][] data = new String[1000][1];
+        String[] data = size == 0 ? new String[1000] : new String[size];
         removeAll();
         int count = 0;
         try {
-            while ((row = csvReader.readLine()) != null) {
-                data[count] = row.split(",");
-            }
+            row = csvReader.readLine();
+            assert row != null;
+            data = row.split(",");
         } catch(IOException e) {
             e.printStackTrace();
         }
+        treeBuildFromSorted((T[])data);
     }
 }
