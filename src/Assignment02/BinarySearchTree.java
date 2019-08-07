@@ -1,11 +1,10 @@
 package Assignment02;
 
 import java.io.*;
-import java.util.Arrays;
 
 public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
     private class Node {
-        T item;
+        T    item;
         Node left;
         Node right;
 
@@ -14,22 +13,18 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
         }
 
         Node(T item, Node left, Node right) {
-            this.item = item;
-            this.left = left;
+            this.item  = item;
+            this.left  = left;
             this.right = right;
         }
     }
 
-    private Node root;
+    private Node       root;
     private FileWriter csv;
 
     public BinarySearchTree() {
         root = null;
-        try {
-            csv = new FileWriter("tree.csv");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        csv = null;
     }
 
     public int count() {
@@ -185,17 +180,13 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
 
     private Node delete(T item, Node r) {
         if (r == null) throw new BSTException("Item does not exist for deletion");
-        if (r.item.compareTo(item) > 0)
-            r.left = delete(item, r.left);
-        else if (r.item.compareTo(item) < 0)
-            r.right = delete(item, r.right);
+        if (r.item.compareTo(item) > 0) r.left = delete(item, r.left);
+        else if (r.item.compareTo(item) < 0) r.right = delete(item, r.right);
         else {
-            if (r.left == null)
-                return r.right;
-            else if (r.right == null)
-                return r.left;
+            if (r.left == null) return r.right;
+            else if (r.right == null) return r.left;
 
-            r.item = minVal(r.right);
+            r.item  = minVal(r.right);
             r.right = delete(r.item, r.right);
         }
         return r;
@@ -229,8 +220,9 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
         treeBuildFromSorted(list, mid, end);
     }
 
-    public void saveToFile(){
+    public void saveToFile(String fileName) {
         try {
+            csv = new FileWriter(fileName);
             saveToFile(root);
         } catch (IOException e) {
             e.printStackTrace();
@@ -242,8 +234,6 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
         saveToFile(r.left);
         csv.append(r.item.toString());
         csv.append(",");
-//        csv.append("\n");
-
         saveToFile(r.right);
         if (r == root) {
             csv.flush();
@@ -258,17 +248,22 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        String row;
+        String   row;
         String[] data = size == 0 ? new String[1000] : new String[size];
         removeAll();
         int count = 0;
         try {
             row = csvReader.readLine();
-            assert row != null;
-            data = row.split(",");
-        } catch(IOException e) {
+            if(row != null) {
+                data = row.split(",");
+            }
+            else {
+                System.out.println("Invalid File");
+                return;
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        treeBuildFromSorted((T[])data);
+        treeBuildFromSorted((T[]) data);
     }
 }

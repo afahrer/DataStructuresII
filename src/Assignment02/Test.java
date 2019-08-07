@@ -88,9 +88,11 @@ public class Test {
         tree3.delete("add");
         tree3.delete("zebra");
         printTreeDetails(tree3);
-        tree3.saveToFile();
+        tree3.saveToFile("tree3.csv");
+        //just to prove that this is from a file root is set to null
         tree3.removeAll();
-        tree3.buildTreeFromFile("tree.csv", 12);
+
+        tree3.buildTreeFromFile("tree3.csv", 12);
         System.out.println("\nBalanced rebuild from file");
         printTreeDetails(tree3);
         System.out.println("\ntree3.isLeaf(\"yell\") " + tree3.isLeaf("yell"));
