@@ -1,6 +1,10 @@
 package Assignment03;
 
-import java.util.Arrays;
+/*
+    Author: Adam Fahrer
+    Date: August 11, 2019
+    Purpose: Priority queue for person objects using a minheap structure
+*/
 
 public class PriorityQueue {
 

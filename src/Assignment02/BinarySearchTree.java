@@ -70,7 +70,7 @@ public class BinarySearchTree<T extends Comparable> implements BSTInterface<T> {
 
     private boolean isBalanced(Node r) {
         if (r == null) return true;
-        return maxHeight(r.left) - maxHeight(r.right) <= 1 && maxHeight(r.left) - maxHeight(r.right) >= -1;
+        return maxHeight(r.left) - minHeight(r.left) <= 1 && maxHeight(r.right) - minHeight(r.right) <= 1;
     }
 
     public boolean isComplete() {

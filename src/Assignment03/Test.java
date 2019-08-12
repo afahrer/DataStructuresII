@@ -1,23 +1,16 @@
 package Assignment03;
-
+/*
+    Author: Adam Fahrer
+    Date: August 11, 2019
+    Purpose: Test program for the priority queue using min heap implementation
+*/
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 
 public class Test {
     public static void main(String[] args) throws FileNotFoundException {
-        /*
-        a)add the first 31 items
-        b)report whether or not the list is empty
-        c)print the list
-        d)remove two items and report the peek and peekPriority values
-        e)remove five items and report the peek and peekPriority values
-        f)remove three items and report the peek and peekPriority values
-        g)print the list
-        h)clear the list and report whether or not it is empty
-        i)add the remaining items in the file
-        j)print the list
-         */
+
 
         PriorityQueue queue = new PriorityQueue();
 

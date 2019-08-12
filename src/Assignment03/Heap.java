@@ -1,5 +1,9 @@
 package Assignment03;
-
+/*
+    Author: Adam Fahrer
+    Date: August 11, 2019
+    Purpose: Min heap structure for person objects. uses an array based heap.
+*/
 public class Heap {
 
     private Person[] items;
