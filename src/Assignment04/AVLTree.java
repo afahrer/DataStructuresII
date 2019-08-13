@@ -9,7 +9,7 @@ public class AVLTree<T extends Comparable> implements BalancedTree<T> {
         Node right;
 
         Node(T item) {
-            this(item,null,null,1);
+            this(item, null, null, 1);
         }
 
         Node(T item, Node left, Node right, int height) {
@@ -48,8 +48,9 @@ public class AVLTree<T extends Comparable> implements BalancedTree<T> {
     }
 
     private int max(Node l, Node r) {
-        if(r == null) return l.height;
-        if(l == null) return r.height;
+        if (r == null && l == null) return 0;
+        if (r == null) return l.height;
+        if (l == null) return r.height;
         return Math.max(l.height, r.height);
     }
 
@@ -58,7 +59,30 @@ public class AVLTree<T extends Comparable> implements BalancedTree<T> {
         root = insert(val, root);
     }
 
-    private Node insert(T val, Node r){
+    private Node insert(T val, Node r) {
+        if (r == null)
+            return new Node(val);
+
+        if (r.item.compareTo(val) > 0)
+            r.left = insert(val, r.left);
+
+        else if (r.item.compareTo(val) < 0)
+            r.right = insert(val, r.right);
+
+        r.height = 1 + treeHeight();
+        int balance = balanceValue(r);
+        if (balance > 1) {
+            if (r.left.item.compareTo(val) > 0)
+                return rotateRight(r);
+            r.left = rotateLeft(r.left);
+            return rotateRight(r);
+        }
+        if (balance < -1) {
+            if (r.right.item.compareTo(val) < 0)
+                return rotateLeft(r);
+            r.right = rotateRight(r.right);
+            return rotateLeft(r);
+        }
         return r;
     }
 
@@ -68,35 +92,85 @@ public class AVLTree<T extends Comparable> implements BalancedTree<T> {
     }
 
     private Node delete(T val, Node r) {
+        if (r == null) return r;
+        if (r.item.compareTo(val) > 0) r.left = delete(val, r.left);
+        else if (r.item.compareTo(val) < 0) r.right = delete(val, r.right);
+        else {
+            if (r.left == null) return r.right;
+            else if (r.right == null) return r.left;
+
+            r.item = minVal(r.right);
+            r.right = delete(r.item, r.right);
+        }
+        r.height = max(r.left, r.right);
+        int balance = balanceValue(r);
+        if(balance > 1) {
+            if (balanceValue(r.left) >= 0) return rotateRight(r);
+            r.left = rotateLeft(r.left);
+            return rotateRight(r);
+        }
+        if (balance < -1) {
+            if (balanceValue(r.right) <= 0) return rotateLeft(r);
+            r.right = rotateRight(r.right);
+            return rotateLeft(r);
+        }
         return r;
+    }
+
+    private T minVal(Node r) {
+        while (r.left != null) {
+            r = r.left;
+        }
+        return r.item;
     }
 
     @Override
     public boolean contains(T val) {
+        return contains(val, root);
+    }
+
+    private boolean contains(T val, Node r) {
+        if (r == null) return false;
+        if (r.item == val) return true;
+        if (r.item.compareTo(val) > 0) return contains(val, r.left);
+        if (r.item.compareTo(val) < 0) return contains(val, r.right);
         return false;
     }
 
     @Override
     public boolean isFullTree() {
-        return false;
+        return isFullTree(root);
+    }
+
+    private boolean isFullTree(Node r) {
+        if (r == null) return true;
+        if (r.left == null ^ r.right == null) return false;
+        return isFullTree(r.left) && isFullTree(r.right);
     }
 
     @Override
     public boolean isBalancedTree() {
-        return false;
+        int balance = balanceValue(root);
+        return balance >= -1 && balance <= 1;
     }
 
     private int balanceValue(Node r) {
-        return r == null ? 0 : r.left.height - r.right.height;
+        if (r == null || r.left == null && r.right == null) return 0;
+        if (r.right == null) return r.left.height;
+        return 0 - r.right.height;
     }
 
     @Override
     public int nodeCount() {
-        return 0;
+        return nodeCount(root);
+    }
+
+    private int nodeCount(Node r) {
+        return r == null ? 0 : 1 + nodeCount(r.left) + nodeCount(r.right);
     }
 
     @Override
     public int treeHeight() {
-        return 0;
+        return root.height;
     }
 }
