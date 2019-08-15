@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.util.Scanner;
 
 public class Test {
+
     public static void main(String[] args) {
         AVLTree tree = new AVLTree();
         Scanner in = null;
@@ -19,15 +20,21 @@ public class Test {
         }
         in.close();
         String[] data = sb.toString().split(" ");
+        int added = 0;
+        int removed = 0;
         for (int i = 0; i < data.length; i++) {
             if(data[i].equals("I")) {
-                tree.insert(data[++i]);
+                tree.insert(Integer.parseInt(data[++i]));
+                added++;
             }
             else if(data[i].equals("D")) {
-                tree.delete(data[++i]);
+                tree.delete(Integer.parseInt(data[++i]));
+                removed++;
             }
             else if(data[i].equals("R")){
-                System.out.println("Height: " + tree.treeHeight() + " Balanced: " + tree.isBalancedTree() + " Is Full: " + tree.isFullTree());
+                System.out.println("Added: " + added + " Removed: " + removed +
+                        "\nHeight: " + tree.treeHeight() + " Balanced: " + tree.isBalancedTree() +
+                        "\nIs Full: " + tree.isFullTree());
                 System.out.println();
             }
         }

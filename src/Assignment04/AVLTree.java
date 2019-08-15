@@ -69,21 +69,8 @@ public class AVLTree<T extends Comparable> implements BalancedTree<T> {
         else if (r.item.compareTo(val) < 0)
             r.right = insert(val, r.right);
 
-        r.height = 1 + treeHeight();
-        int balance = balanceValue(r);
-        if (balance > 1) {
-            if (r.left.item.compareTo(val) > 0)
-                return rotateRight(r);
-            r.left = rotateLeft(r.left);
-            return rotateRight(r);
-        }
-        if (balance < -1) {
-            if (r.right.item.compareTo(val) < 0)
-                return rotateLeft(r);
-            r.right = rotateRight(r.right);
-            return rotateLeft(r);
-        }
-        return r;
+        r.height = 1 + max(r.left, r.right);
+        return rebalanceTree(r);
     }
 
     @Override
@@ -102,19 +89,9 @@ public class AVLTree<T extends Comparable> implements BalancedTree<T> {
             r.item = minVal(r.right);
             r.right = delete(r.item, r.right);
         }
-        r.height = max(r.left, r.right);
-        int balance = balanceValue(r);
-        if(balance > 1) {
-            if (balanceValue(r.left) >= 0) return rotateRight(r);
-            r.left = rotateLeft(r.left);
-            return rotateRight(r);
-        }
-        if (balance < -1) {
-            if (balanceValue(r.right) <= 0) return rotateLeft(r);
-            r.right = rotateRight(r.right);
-            return rotateLeft(r);
-        }
-        return r;
+        r.height = 1 + max(r.left, r.right);
+
+        return rebalanceTree(r);
     }
 
     private T minVal(Node r) {
@@ -150,14 +127,40 @@ public class AVLTree<T extends Comparable> implements BalancedTree<T> {
 
     @Override
     public boolean isBalancedTree() {
-        int balance = balanceValue(root);
+        return isBalancedTree(root);
+    }
+
+    private boolean isBalancedTree(Node r) {
+        int balance = balanceValue(r);
         return balance >= -1 && balance <= 1;
     }
 
     private int balanceValue(Node r) {
         if (r == null || r.left == null && r.right == null) return 0;
         if (r.right == null) return r.left.height;
-        return 0 - r.right.height;
+        if (r.left == null) return 0 - r.right.height;
+        return r.left.height - r.right.height;
+    }
+    private Node rebalanceTree(Node r) {
+        if(!isBalancedTree(r)) {
+            if(balanceValue(r) < 0) {
+                r = rotateLeft(r);
+                if(balanceValue(r) > 1) {
+                    r = rotateRight(r);
+                    r.right = rotateRight(r.right);
+                    r = rotateLeft(r);
+                }
+            }
+            else {
+                r = rotateRight(r);
+                if(balanceValue(r) > 1) {
+                    r = rotateLeft(r);
+                    r.left = rotateLeft(r.left);
+                    r = rotateRight(r);
+                }
+            }
+        }
+        return r;
     }
 
     @Override
