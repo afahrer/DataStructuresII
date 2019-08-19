@@ -1,4 +1,4 @@
-package Assignment05;
+package Assignment05.Qu1;
 
 public class Employee {
     private int empID;

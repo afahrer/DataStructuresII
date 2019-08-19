@@ -1,4 +1,4 @@
-package Assignment05;
+package Assignment05.Qu1;
 
 public class Test {
     public static void main(String[] args) {
@@ -28,7 +28,7 @@ public class Test {
         }
         hash.delete(402);
         hash.delete(88);
-        System.out.println("Retrieve 3\n" + hash.retrieve(3));
+        System.out.println("retrieve(3)\n" + hash.retrieve(3));
         System.out.println();
         hash.printHash();
         System.out.println();

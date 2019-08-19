@@ -1,4 +1,4 @@
-package Assignment05;
+package Assignment05.Qu1;
 
 public class Hashmap {
     private Employee[] list = new Employee[401];
