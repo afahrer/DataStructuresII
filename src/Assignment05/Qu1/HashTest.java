@@ -1,6 +1,11 @@
 package Assignment05.Qu1;
+/*
+    Author: Adam Fahrer
+    Date: August 20, 2019
+    Purpose: To test the Hashmap class methods
+*/
+public class HashTest {
 
-public class Test {
     public static void main(String[] args) {
         System.out.println("Linear\n");
         buildHash(0);
@@ -9,6 +14,7 @@ public class Test {
         System.out.println("Double Hash\n");
         buildHash(2);
     }
+
     private static void buildHash(int mode) {
         Hashmap hash = new Hashmap(mode);
         Employee[] list = {

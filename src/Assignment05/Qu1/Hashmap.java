@@ -1,5 +1,12 @@
 package Assignment05.Qu1;
-
+/*
+    Author: Adam Fahrer
+    Date: August 20, 2019
+    Purpose: To create a hashmap that can be implemented using three methods
+             mode = 0: Linear Probing
+             mode = 1: Quadratic Probing
+             mode = 2: Double Hashing
+*/
 public class Hashmap {
     private Employee[] list = new Employee[401];
     private final int mode;

@@ -1,5 +1,9 @@
 package Assignment05.Qu1;
-
+/*
+    Author: Adam Fahrer
+    Date: August 20, 2019
+    Purpose: To contain Employee objects used by the Hashmap class
+*/
 public class Employee {
     private int empID;
     private String firstName;
